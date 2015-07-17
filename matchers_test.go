@@ -9,14 +9,16 @@ import (
 type matchTest struct {
 	matchFn     func() types.GomegaMatcher
 	passingCode int
-	failingCode int
 }
 
 var matchTests = []matchTest{
-	{BeHTTPStatusOK, 200, 404},
+	{BeHTTPStatusOK, 200},
 }
 
 func TestMatch(t *testing.T) {
+	failCode := 0
+	invalidCode := "banana"
+
 	for i, test := range matchTests {
 		matcher := test.matchFn()
 
@@ -28,20 +30,20 @@ func TestMatch(t *testing.T) {
 			t.Errorf("Test %d: Match(%d): Expected err to be nil, was %v", i, test.passingCode, err)
 		}
 
-		failSuccess, err := matcher.Match(test.failingCode)
+		failSuccess, err := matcher.Match(failCode)
 		if failSuccess {
-			t.Errorf("Test %d: Match(%d): Expected false, actual true", i, test.failingCode)
+			t.Errorf("Test %d: Match(%d): Expected false, actual true", i, failCode)
 		}
 		if err != nil {
-			t.Errorf("Test %d: Match(%d): Expected err to be nil, was %v", i, test.failingCode, err)
+			t.Errorf("Test %d: Match(%d): Expected err to be nil, was %v", i, failCode, err)
 		}
 
-		invalidMatch, err := matcher.Match("banana")
+		invalidMatch, err := matcher.Match(invalidCode)
 		if invalidMatch {
-			t.Errorf("Test %d: Match(%q): Expected false, actual true", i, "banana")
+			t.Errorf("Test %d: Match(%q): Expected false, actual true", i, invalidCode)
 		}
 		if err == nil {
-			t.Errorf("Test %d: Match(%q): Expected err to not be nil", i, "banana")
+			t.Errorf("Test %d: Match(%q): Expected err to not be nil", i, invalidCode)
 		}
 	}
 }
