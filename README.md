@@ -1,5 +1,7 @@
 # httpmatchers
 
+[![GoDoc][godoc-badge]][godoc]
+
 Package httpmatchers provides a set of custom matchers for
 github.com/onsi/gomega to use for testing responses from HTTP server handlers.
 
@@ -25,3 +27,6 @@ Which yields an error message like this
 		<string>: HTTP status 400 Bad Request
 	to be
 		<string>: HTTP status 200 OK
+
+[godoc]: https://godoc.org/github.com/jcbwlkr/httpmatchers "GoDoc"
+[godoc-badge]: https://godoc.org/github.com/jcbwlkr/httpmatchers?status.svg "GoDoc Badge"
